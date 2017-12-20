@@ -7,10 +7,9 @@ module.exports = async (body) => {
   const convertedData = formatConverterService.convert(body.data, body.config.targetFormat);
   try {
     const result = await store.pushToLa(body.data, body.config.destinationLA);
-    console.log(result);    
     return result;
   } catch(err) {
     winston.error(`send controller error: ${err}`);
-    return err.message;
+    return err;
   }
 }
