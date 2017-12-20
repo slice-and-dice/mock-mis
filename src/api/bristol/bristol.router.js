@@ -10,7 +10,7 @@ module.exports = () => {
   });
 
   router.post('', (req, res, next) => {
-    const formattedData = formatConverterService.convert(req.body.data, 'northgate1');
+    const formattedData = formatConverterService.convert(req.body.data, req.body.config.targetFormat);
     store.pushData(formattedData);
     res.send(`added ${req.body.data}`);
   });
