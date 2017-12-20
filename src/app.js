@@ -7,6 +7,6 @@ module.exports = () => {
 
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use('/', routers());
-  
+
   return app;
 };

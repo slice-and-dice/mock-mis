@@ -1,4 +1,4 @@
-const Router = require('express').Router;
+const { Router } = require('express');
 const sendRouter = require('./send');
 const retrieveRouter = require('./retrieve');
 
@@ -9,4 +9,4 @@ module.exports = () => {
   router.use('/retrieve', retrieveRouter());
 
   return router;
-}
+};
