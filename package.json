@@ -8,7 +8,8 @@
     "format": "prettier --single-quote --trailing-comma es5 --write 'src/**/*.js'",
     "format:verify": "prettier --single-quote --trailing-comma es5 --list-different 'src/**/*.js'",
     "lint": "esw src/",
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "heroku-start": "node src/index.js"
   },
   "repository": {
     "type": "git",
