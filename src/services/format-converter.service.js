@@ -16,7 +16,7 @@ const convert = (data, targetFormatName) => {
     const newOrg = {};
 
     Object.keys(org).forEach(property => {
-      newOrg[targetFormat[property]] = org[property];
+      newOrg[targetFormat[property] || property] = org[property];
     });
 
     output.push(newOrg);
