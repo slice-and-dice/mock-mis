@@ -1,4 +1,5 @@
 const request = require('request');
+const winston = require('winston');
 
 const apiKey = process.env.PREMISE_VALIDATOR_API_KEY
 
@@ -12,10 +13,14 @@ const validate = data => {
             reject(new Error('Could not validate address data'));
         } else {
             data.forEach(org => {
-                if (org.postcode) {
+                if (apiKey && org.postcode) {
                     const url = `${baseUrl}postcode=${org.postcode}&key=${apiKey}`;
 
                     request(url, (err, res) => {
+                        if (err) {
+                            winston.info('premise-validator.service: data retrieval failed');
+                            reject(err);
+                        }
                         const body = JSON.parse(res.body);
                         const { results } = body;
 
@@ -28,6 +33,9 @@ const validate = data => {
 
                 }
             });
+
+            winston.info('premise-validator.service: data retrieval successful');
+
             resolve(data);
         }
     });
