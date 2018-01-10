@@ -1,16 +1,20 @@
-const { formatConverterService } = require('../../services/');
+const { formatConverterService, premiseValidatorService } = require('../../services/');
 const store = require('../../store');
 const winston = require('winston');
 
 module.exports = async body => {
   winston.info('send controller called');
+
   const convertedData = formatConverterService.convert(
     body.data,
     body.config.targetFormat
   );
+
   try {
+    const validatedData = await premiseValidatorService.validate(convertedData);
+
     const result = await store.pushToLa(
-      convertedData,
+      validatedData,
       body.config.destinationLA
     );
     return result;
