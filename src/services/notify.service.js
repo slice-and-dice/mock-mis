@@ -19,3 +19,4 @@ const notify = (template, email) => {
 }
 
   module.exports = { notify };
+  
