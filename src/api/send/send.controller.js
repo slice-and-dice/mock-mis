@@ -1,4 +1,5 @@
-const { formatConverterService, premiseValidatorService } = require('../../services/');
+const { formatConverterService, notifyService, premiseValidatorService } = require('../../services/');
+
 const store = require('../../store');
 const winston = require('winston');
 
@@ -17,6 +18,7 @@ module.exports = async body => {
       validatedData,
       body.config.destinationLA
     );
+    notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
     return result;
   } catch (err) {
     winston.error(`send controller error: ${err}`);
