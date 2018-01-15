@@ -7,12 +7,20 @@ const baseUrl = 'https://api.ordnancesurvey.co.uk/places/v1/addresses/postcode?'
 
 const randomlyFail = () => Math.random() > 0.9;
 
+const isAddressValid = (data, postcode, orgName) => {
+    return typeof data.find(result => result.DPA.POSTCODE.toUpperCase() === postcode.toUpperCase() && result.DPA.ORGANISATION_NAME && result.DPA.ORGANISATION_NAME.toUpperCase() === orgName.toUpperCase()) === 'object';
+}
+
 const validate = data => {
     return new Promise((resolve, reject) => {
         if (randomlyFail()) {
             reject(new Error('Could not validate address data'));
         } else {
-            data.forEach(org => {
+            const output = [];
+
+            data.map(org => {
+                const processedOrg = Object.assign({}, org);
+
                 if (apiKey && org.postcode) {
                     const url = `${baseUrl}postcode=${org.postcode}&key=${apiKey}`;
 
@@ -21,22 +29,18 @@ const validate = data => {
                             winston.info('premise-validator.service: data retrieval failed');
                             reject(err);
                         }
-                        const body = JSON.parse(res.body);
-                        const { results } = body;
 
-                        org.addressValidated = results.find(result => {
-                            return result.DPA.POSTCODE.toUpperCase() === org.postcode.toUpperCase() && result.DPA.ORGANISATION_NAME === org.organisationName.toUpperCase();
-                        }) ? true : false;
+                        const { results } = JSON.parse(res.body);
 
-                        return org;
+                        processedOrg.addressValidated = isAddressValid(results, org.postcode, org.organisationName);
                     });
-
                 }
+
+                output.push(processedOrg);
             });
 
             winston.info('premise-validator.service: data retrieval successful');
-
-            resolve(data);
+            resolve(output);
         }
     });
 };
