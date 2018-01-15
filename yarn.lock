@@ -1883,7 +1883,7 @@ normalize-path@^2.0.0, normalize-path@^2.0.1:
   dependencies:
     remove-trailing-separator "^1.0.1"
 
-notifications-node-client@^4.1.0:
+notifications-node-client@4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/notifications-node-client/-/notifications-node-client-4.1.0.tgz#637c2c53aea98b845d3f488056f751359bdf979b"
   dependencies:

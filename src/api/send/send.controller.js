@@ -1,16 +1,21 @@
-const { formatConverterService, notifyService } = require('../../services/');
+const { formatConverterService, notifyService, premiseValidatorService } = require('../../services/');
+
 const store = require('../../store');
 const winston = require('winston');
 
 module.exports = async body => {
   winston.info('send controller called');
+
   const convertedData = formatConverterService.convert(
     body.data,
     body.config.targetFormat
   );
+
   try {
+    const validatedData = await premiseValidatorService.validate(convertedData);
+
     const result = await store.pushToLa(
-      convertedData,
+      validatedData,
       body.config.destinationLA
     );
     notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
