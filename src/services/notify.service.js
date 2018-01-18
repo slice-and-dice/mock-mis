@@ -6,6 +6,10 @@ const notifyClient = new NotifyClient(process.env.NOTIFY_KEY);
 const notify = (template, email) => {
   winston.info('notify.service: notify called');
   return new Promise((resolve, reject) => {
+    if (!email) {
+      resolve({});
+    }
+
     notifyClient.sendEmail(template, email)
       .then(response => {
         winston.info('notify.service: notify successful')
@@ -19,4 +23,3 @@ const notify = (template, email) => {
 }
 
   module.exports = { notify };
-  
