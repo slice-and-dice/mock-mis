@@ -1,4 +1,4 @@
-const { formatConverterService, notifyService, premiseValidatorService } = require('../../services/');
+const { formatConverterService, notifyService, potentialRiskEngineService, premiseValidatorService } = require('../../services/');
 
 const store = require('../../store');
 const winston = require('winston');
@@ -14,8 +14,12 @@ module.exports = async body => {
   try {
     const validatedData = await premiseValidatorService.validate(convertedData);
 
+    const potentialRiskEnrichedData = await potentialRiskEngineService.getCriteria(
+      validatedData
+    );
+
     const result = await store.pushToLa(
-      validatedData,
+      potentialRiskEnrichedData,
       body.config.destinationLA
     );
     notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
