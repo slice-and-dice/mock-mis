@@ -1,7 +1,7 @@
 const { info, error } = require('winston');
 
-const logFunctionCall = (component, func) => {
-  info(`${component}: ${func} called`)
+const logFunctionCall = (component, func, paramInfo) => {
+  info(`${component}: ${func} called ${paramInfo ? `with ${paramInfo}` : ''}`);
 }
 
 const logFunctionSuccess = (component, func) => {
