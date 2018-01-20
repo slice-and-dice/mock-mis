@@ -1,10 +1,28 @@
 const store = require('../../store');
 const winston = require('winston');
+const formatConverterService = require('../../services/format-converter.service');
 
-const retrieveAllLas = async () => {
+const convertRetrievedData = (data, authorityCode) => {
+  let convertedData = formatConverterService.convert(
+    data,
+    authorityCode,
+    'retrieve'
+  );
+
+  return convertedData;
+}
+
+const retrieveAllLas = async (standardisedSwitch) => {
   winston.info('retrieve.controller: retrieveAllLas called');
   try {
-    const result = await store.getAllLas();
+    let result = await store.getAllLas();
+    if(standardisedSwitch !== 'false') {
+      const resultConverted = {};
+      Object.keys(result).forEach((authorityCode) => {
+        resultConverted[authorityCode] = convertRetrievedData(result[authorityCode], authorityCode);
+      });
+      result = resultConverted;
+    }
     winston.info('retrieve.controller: retrieveAllLas succeeded');
     return result;
   } catch (err) {
@@ -13,9 +31,12 @@ const retrieveAllLas = async () => {
   }
 };
 
-const retrieveLa = async la => {
+const retrieveLa = async (la, standardisedSwitch) => {
   try {
-    const result = await store.getLa(la);
+    let result = await store.getLa(la);
+    if(standardisedSwitch !== 'false') {
+      result = convertRetrievedData(result, la);
+    }
     winston.info('retrieve.controller: retrieveLa succeeded');
     return result;
   } catch (err) {
