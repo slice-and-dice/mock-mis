@@ -15,8 +15,16 @@ Additional capabilities are listed under 'features'.
 `?standardised=false` - When retrieving, you can use this query to return details in the native MIS format, rather than converting it back to the standardised format.
 
 ## Features (WIP)
+- Randomised intentional failure for development
 - Convert from standardised format to custom LA format
 - Convert from custom LA format to standardised format
 - Send an email notification to a specified recipient
 - Validate the premises identified in a registration
 - Connect to FHRS
+
+## Pushing to GOV.UK PaaS
+1. Log in with `cf login -a api.cloud.service.gov.uk -u USERNAME`
+2. Enter the password
+3. Temporarily remove the node_modules directory (failing to do this will result in a symlink error)
+4. `cf push`
+5. Access at: `https://node-app-paas-test.cloudapps.digital` (the URL is determined by `manifest.yml`)
