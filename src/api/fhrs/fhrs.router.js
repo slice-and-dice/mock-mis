@@ -12,5 +12,9 @@ module.exports = () => {
     res.send(await fhrsController.getEstablishmentsFromLa(req.params.la));
   });
 
+  router.post('/buildReport', async (req, res) => {
+    res.send(await fhrsController.buildReport(req.body));
+  });
+
   return router;
 }

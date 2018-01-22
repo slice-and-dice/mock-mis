@@ -1,3 +1,4 @@
+const flattenDeep = require('lodash.flattendeep');
 const connector = require('./fhrs.connector');
 const { loggingService } = require('../../services');
 
@@ -26,12 +27,48 @@ const getEstablishmentsFromLa = async (la) => {
     loggingService.logFunctionSuccess('fhrs.controller', 'getEstablishmentsFromLa');
     return establishments;
   } catch (err) {
-    loggingService.logFunctionError('fhrs.contoller', 'getEstablishmentsFromLa');
+    loggingService.logFunctionError('fhrs.contoller', 'getEstablishmentsFromLa', err);
+    return err;
+  }
+}
+
+// This function is very slow and long running, and time complextity increseases hugely with input. 
+// Beyond the prototype level, a stream or paginated approach to building a report would be suitable.
+const buildReport = async (body) => {
+  loggingService.logFunctionCall('fhrs.controller', 'buildReport', body.la);
+
+  try {
+    const localAuthoritiesPromises = [];
+
+    body.la.forEach((la) => {
+      localAuthoritiesPromises.push(getEstablishmentsFromLa(la));
+    });
+
+    const localAuthorities = await Promise.all(localAuthoritiesPromises);
+
+    const combinedEstablishments = flattenDeep(localAuthorities.map(la => la.establishments));
+    const filteredEstablishments = [];
+
+    combinedEstablishments.forEach((establishment) => {
+      const newEstablishment = Object.assign({}, establishment);
+      
+      body.filterParams.forEach((param) => {
+        delete newEstablishment[param];
+      });
+
+      filteredEstablishments.push(newEstablishment);
+    });
+
+    loggingService.logFunctionSuccess('fhrs.controller', 'buildReport');
+    return filteredEstablishments;
+  } catch (err) {
+    loggingService.logFunctionError('fhrs.contoller', 'buildReport', err);
     return err;
   }
 }
 
 module.exports = {
+  buildReport,
   getAllEstablishments,
   getEstablishmentsFromLa,
 }
