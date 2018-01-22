@@ -1,0 +1,9 @@
+{
+    "config": {
+		    "authorityCode": "001"
+    },
+    "data": [
+        {"orgName": "My Old Dutch", "address": "131-132 High Holborn", "postcode": "WC1V 6PS"},
+        {"orgName": "Wahaca", "address": "20 Atlantic Rd Brixton", "postcode": "SW9 8JA"}
+    ]
+}
