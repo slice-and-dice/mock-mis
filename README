@@ -1,0 +1,22 @@
+# WIP: Food registration API
+
+## About
+This application receives food business registrations, then forwards them to a mockup of Local Authority's MIS systems in the appropriate format.
+Additional capabilities are listed under 'features'.
+
+## Routes
+`/send` - Sends new registration details to a specified mock-MIS. See [exampleSend.json](exampleSend.json) for correct format of config and data.
+
+`/retrieve` - Retrieves all registration details from all mock-MIS stores.
+
+`/retrieve/:authorityCode` (e.g. `001`) - Retrieves all registration details from the specified mock-MIS store.
+
+## Options
+`?standardised=false` - When retrieving, you can use this query to return details in the native MIS format, rather than converting it back to the standardised format.
+
+## Features (WIP)
+- Convert from standardised format to custom LA format
+- Convert from custom LA format to standardised format
+- Send an email notification to a specified recipient
+- Validate the premises identified in a registration
+- Connect to FHRS

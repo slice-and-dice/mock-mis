@@ -20,7 +20,9 @@ module.exports = async body => {
       body.config.authorityCode
     );
 
-    notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
+    if(process.env.EMAIL_TEMPLATE && body.email) {
+      notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
+    }
     return result;
   } catch (err) {
     winston.error(`send controller error: ${err}`);
