@@ -11,8 +11,18 @@ Additional capabilities are listed under 'features'.
 
 `/retrieve/:authorityCode` (e.g. `001`) - Retrieves all registration details from the specified mock-MIS store.
 
+`GET/fhrs` - Gets all establishments from the FHRS feed
+
+`GET/:la` (e.g. `Bristol`) - Gets all establishments from specified Local Authoritiies
+
+`POST/buildReport` - Uses options to construct a report from FHRS data
+
 ## Options
 `?standardised=false` - When retrieving, you can use this query to return details in the native MIS format, rather than converting it back to the standardised format.
+
+`la` - When using FHRS/buildReport, list of local authorities to include in report.
+
+`filterParams` - When using FHRS/buildReport, list of params to filter out of the results.
 
 ## Features (WIP)
 - Randomised intentional failure for development

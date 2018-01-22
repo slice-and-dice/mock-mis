@@ -1,0 +1,4 @@
+{
+	"la": ["Bristol", "Camden"],
+	"filterParams": ["AddressLine1", "Phone", "LocalAuthorityCode"]
+}
