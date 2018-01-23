@@ -1,8 +1,8 @@
+// the councils' mock-mis stores/databases are identified here by their 'authority code' - 001 to 387 for instance.
 const store = {
-  camden: [],
-  bristol: [],
-  lambeth: [],
-  winchester: [],
+  '001': [], // e.g. bristol
+  '002': [], // e.g. camden
+  '003': [], // e.g. winchester
 };
 
 const randomlyFail = () => Math.random() > 0.9;

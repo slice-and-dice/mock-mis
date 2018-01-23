@@ -8,7 +8,8 @@ module.exports = async body => {
 
   const convertedData = formatConverterService.convert(
     body.data,
-    body.config.targetFormat
+    body.config.authorityCode,
+    'send'
   );
 
   try {
@@ -22,7 +23,10 @@ module.exports = async body => {
       potentialRiskEnrichedData,
       body.config.destinationLA
     );
-    notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
+
+    if(process.env.EMAIL_TEMPLATE && body.email) {
+      notifyService.notify(process.env.EMAIL_TEMPLATE, body.email);
+    }
     return result;
   } catch (err) {
     winston.error(`send controller error: ${err}`);
