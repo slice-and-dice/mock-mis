@@ -1,8 +1,7 @@
 const { NotifyClient } = require('notifications-node-client');
 const winston = require('winston');
 
-if(process.env.NOTIFY_KEY) {
-  const notifyClient = new NotifyClient(process.env.NOTIFY_KEY);
+const notifyClient = new NotifyClient(process.env.NOTIFY_KEY);
 
 const notify = (template, email) => {
   winston.info('notify.service: notify called');
@@ -23,4 +22,4 @@ const notify = (template, email) => {
   });
 }
 
-  module.exports = { notify };
+module.exports = { notify };
