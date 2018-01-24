@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const criteriaSchema = new Schema({
   riskType: String,
-  riskValues: [{ value: Number, options: [String] }]
+  riskValue: Number,
 });
 
 module.exports = mongoose.model('criteria', criteriaSchema);
