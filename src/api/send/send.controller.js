@@ -20,7 +20,7 @@ module.exports = async body => {
     });
     const potentialRiskEnrichedData = body.config.enrichment.riskCalculation ? await Promise.all(enrichedDataPromises) : {};
 
-    const enrichedData = Object.assign(body.data, validatedData, potentialRiskEnrichedData);
+    const enrichedData = Object.assign(convertedData, validatedData, potentialRiskEnrichedData);
     const result = await store.pushToLa(
       enrichedData,
       body.config.authorityCode
