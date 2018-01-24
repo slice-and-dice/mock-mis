@@ -1,0 +1,8 @@
+{
+	"la": ["Bristol", "Camden"],
+	"excludedData": ["AddressLine1", "Phone", "LocalAuthorityCode"],
+	"filters": {
+		"ratingKey": "2"	
+	},
+	"cutoffDate": "2016-04-11T00:00:00"
+}
