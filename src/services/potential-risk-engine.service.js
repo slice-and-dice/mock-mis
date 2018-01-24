@@ -6,7 +6,7 @@ const options = {
   useMongoClient: true
 };
 
-mongoose.connect(process.env.RISK_RULES_DB_URL, options);
+mongoose.connect(process.env.RISK_RULES_DB_URI, options);
 
 mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
