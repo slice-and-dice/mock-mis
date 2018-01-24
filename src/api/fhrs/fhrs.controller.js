@@ -14,15 +14,15 @@ const getAllEstablishments = async () => {
   }
 }
 
-const getEstablishmentsFromLa = async (la) => {
+const getEstablishmentsFromLa = async (la, filters) => {
   loggingService.logFunctionCall('fhrs.controller', 'getEstablishmentsFromLa');
   try {
     const allAuthorities = await connector.getAllBasic('Authorities');
     const laSummary = allAuthorities.authorities.filter(authority => authority.Name === la);
-    const searchParams = {
+    const searchParams = Object.assign({
       name: '',
       localAuthorityId: laSummary[0].LocalAuthorityId,
-    }
+    }, filters);
     const establishments = await connector.establishmentSearch(searchParams);
     loggingService.logFunctionSuccess('fhrs.controller', 'getEstablishmentsFromLa');
     return establishments;
@@ -41,7 +41,7 @@ const buildReport = async (body) => {
     const localAuthoritiesPromises = [];
 
     body.la.forEach((la) => {
-      localAuthoritiesPromises.push(getEstablishmentsFromLa(la));
+      localAuthoritiesPromises.push(getEstablishmentsFromLa(la, body.filters));
     });
 
     const localAuthorities = await Promise.all(localAuthoritiesPromises);
@@ -52,15 +52,19 @@ const buildReport = async (body) => {
     combinedEstablishments.forEach((establishment) => {
       const newEstablishment = Object.assign({}, establishment);
       
-      body.filterParams.forEach((param) => {
-        delete newEstablishment[param];
+      body.excludedData.forEach((data) => {
+        delete newEstablishment[data];
       });
 
       filteredEstablishments.push(newEstablishment);
     });
 
+    const result = body.cutoffDate 
+      ? filteredEstablishments.filter(establishment => body.cutoffDate > establishment.RatingDate) 
+      : filteredEstablishments;
+
     loggingService.logFunctionSuccess('fhrs.controller', 'buildReport');
-    return filteredEstablishments;
+    return result;
   } catch (err) {
     loggingService.logFunctionError('fhrs.contoller', 'buildReport', err);
     return err;
