@@ -12,6 +12,32 @@ const addCriteria = async body => {
   }
 }
 
+const getCriteria = async () => {
+  loggingService.logFunctionCall('criteria.controller', 'getCriteria');
+  try {
+    const result = await potentialRiskEngineService.getCriteria();
+    loggingService.logFunctionSuccess('criteria.controller', 'getCriteria');
+    return result;
+  } catch (err) {
+    loggingService.logFunctionError('criteria.controller', 'getCriteria', err);
+    return err;
+  }
+}
+
+const updateCriteria = async (body) => {
+  loggingService.logFunctionCall('criteria.controller', 'updateCriteria');
+  try {
+    const result = await potentialRiskEngineService.updateCriteria(body);
+    loggingService.logFunctionSuccess('criteria.controller', 'updateCriteria');
+    return result;
+  } catch (err) {
+    loggingService.logFunctionError('criteria.controller', 'updateCriteria', err);
+    return err;
+  }
+}
+
 module.exports = {
   addCriteria,
+  getCriteria,
+  updateCriteria
 }
