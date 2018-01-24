@@ -1,9 +1,13 @@
 {
     "config": {
-		    "authorityCode": "001"
+		    "authorityCode": "001",
+		    "enrichment": {
+		    	"premiseValidation": false,
+		    	"riskCalculation": true
+		    }
     },
     "data": [
-        {"orgName": "My Old Dutch", "address": "131-132 High Holborn", "postcode": "WC1V 6PS"},
-        {"orgName": "Wahaca", "address": "20 Atlantic Rd Brixton", "postcode": "SW9 8JA"}
+        {"orgName": "My Old Dutch", "address": "130-131 High Holborn", "postcode": "WC1V 6PS", "Raw_Meat": true},
+        {"orgName": "Wahaca", "address": "20 Atlantic Rd. Brixton", "postcode": "SW9 8JA", "Vulnerable_Customers": true}
     ]
 }
