@@ -27,7 +27,8 @@
   "dependencies": {
     "body-parser": "1.18.2",
     "express": "4.16.2",
-    "lodash.flattendeep": "^4.4.0",
+    "mongoose": "4.13.9",
+    "lodash.flattendeep": "4.4.0",
     "notifications-node-client": "4.1.0",
     "request": "2.83.0",
     "winston": "2.4.0",

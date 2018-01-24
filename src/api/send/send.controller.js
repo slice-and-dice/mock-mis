@@ -1,4 +1,4 @@
-const { formatConverterService, notifyService, premiseValidatorService } = require('../../services/');
+const { formatConverterService, notifyService, potentialRiskEngineService, premiseValidatorService } = require('../../services/');
 
 const store = require('../../store');
 const winston = require('winston');
@@ -13,10 +13,16 @@ module.exports = async body => {
   );
 
   try {
-    const validatedData = await premiseValidatorService.validate(convertedData);
+    const validatedData = body.config.enrichment.premiseValidation ? await premiseValidatorService.validate(convertedData) : {};
+    const enrichedDataPromises = [];
+    convertedData.forEach((data) => {
+      enrichedDataPromises.push(potentialRiskEngineService.calculateRisk(data));
+    });
+    const potentialRiskEnrichedData = body.config.enrichment.riskCalculation ? await Promise.all(enrichedDataPromises) : {};
 
+    const enrichedData = Object.assign(convertedData, validatedData, potentialRiskEnrichedData);
     const result = await store.pushToLa(
-      validatedData,
+      enrichedData,
       body.config.authorityCode
     );
 
