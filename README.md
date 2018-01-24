@@ -13,16 +13,20 @@ Additional capabilities are listed under 'features'.
 
 `GET/fhrs` - Gets all establishments from the FHRS feed
 
-`GET/:la` (e.g. `Bristol`) - Gets all establishments from specified Local Authoritiies
+`GET/fhrs/:la` (e.g. `Bristol`) - Gets all establishments from specified Local Authoritiies
 
-`POST/buildReport` - Uses options to construct a report from FHRS data
+`POST/fhrs/buildReport` - Uses options to construct a report from FHRS data
 
 ## Options
 `?standardised=false` - When retrieving, you can use this query to return details in the native MIS format, rather than converting it back to the standardised format.
 
 `la` - When using FHRS/buildReport, list of local authorities to include in report.
 
-`filterParams` - When using FHRS/buildReport, list of params to filter out of the results.
+`excludedData` - When using FHRS/buildReport, list of params to exclude from the results.
+
+`filters` - When using FHRS/buildReport, object of filters to apply to the search query. Keys and values allowed can be found [here](http://api.ratings.food.gov.uk/Help/Api/GET-Establishments_name_address_longitude_latitude_maxDistanceLimit_businessTypeId_schemeTypeKey_ratingKey_ratingOperatorKey_localAuthorityId_countryId_sortOptionKey_pageNumber_pageSize) 
+
+`cutoffDate` - When using FHRS/buildReport, will remove any results with a "RatingDate" after this date.
 
 ## Features (WIP)
 - Randomised intentional failure for development
