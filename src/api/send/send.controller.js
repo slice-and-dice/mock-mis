@@ -13,15 +13,17 @@ module.exports = async body => {
   );
 
   try {
-    const validatedData = await premiseValidatorService.validate(convertedData);
+    const validatedData = body.config.enrichment.premiseValidation ? await premiseValidatorService.validate(convertedData) : {};
+    const enrichedDataPromises = [];
+    convertedData.forEach((data) => {
+      enrichedDataPromises.push(potentialRiskEngineService.calculateRisk(data));
+    });
+    const potentialRiskEnrichedData = body.config.enrichment.riskCalculation ? await Promise.all(enrichedDataPromises) : {};
 
-    const potentialRiskEnrichedData = await potentialRiskEngineService.getCriteria(
-      validatedData
-    );
-
+    const enrichedData = Object.assign(body.data, validatedData, potentialRiskEnrichedData);
     const result = await store.pushToLa(
-      potentialRiskEnrichedData,
-      body.config.destinationLA
+      enrichedData,
+      body.config.authorityCode
     );
 
     if(process.env.EMAIL_TEMPLATE && body.email) {
