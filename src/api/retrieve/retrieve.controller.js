@@ -3,7 +3,7 @@ const winston = require('winston');
 const formatConverterService = require('../../services/format-converter.service');
 
 const convertRetrievedData = (data, authorityCode) => {
-  let convertedData = formatConverterService.convert(
+  const convertedData = formatConverterService.convert(
     data,
     authorityCode,
     'retrieve'
