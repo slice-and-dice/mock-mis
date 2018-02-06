@@ -17,6 +17,8 @@ Additional capabilities are listed under 'features'.
 
 `POST/fhrs/buildReport` - Uses options to construct a report from FHRS data
 
+`POST/fhrs/buildReport/csv` - Uses options to construct a CSV report from FHRS data - in Postman, select "Send and download" to download csv file
+
 ## Options
 `?standardised=false` - When retrieving, you can use this query to return details in the native MIS format, rather than converting it back to the standardised format.
 
@@ -24,7 +26,7 @@ Additional capabilities are listed under 'features'.
 
 `excludedData` - When using FHRS/buildReport, list of params to exclude from the results.
 
-`filters` - When using FHRS/buildReport, object of filters to apply to the search query. Keys and values allowed can be found [here](http://api.ratings.food.gov.uk/Help/Api/GET-Establishments_name_address_longitude_latitude_maxDistanceLimit_businessTypeId_schemeTypeKey_ratingKey_ratingOperatorKey_localAuthorityId_countryId_sortOptionKey_pageNumber_pageSize) 
+`filters` - When using FHRS/buildReport, object of filters to apply to the search query. Keys and values allowed can be found [here](http://api.ratings.food.gov.uk/Help/Api/GET-Establishments_name_address_longitude_latitude_maxDistanceLimit_businessTypeId_schemeTypeKey_ratingKey_ratingOperatorKey_localAuthorityId_countryId_sortOptionKey_pageNumber_pageSize)
 
 `cutoffDate` - When using FHRS/buildReport, will remove any results with a "RatingDate" after this date.
 
@@ -35,6 +37,7 @@ Additional capabilities are listed under 'features'.
 - Send an email notification to a specified recipient
 - Validate the premises identified in a registration
 - Connect to FHRS
+- Download FHRS report as CSV
 
 ## Pushing to GOV.UK PaaS
 1. Log in with `cf login -a api.cloud.service.gov.uk -u USERNAME`

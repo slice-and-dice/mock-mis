@@ -1,6 +1,9 @@
 const flattenDeep = require('lodash.flattendeep');
+const json2csv = require('json2csv');
 const connector = require('./fhrs.connector');
-const { loggingService } = require('../../services');
+const {
+  loggingService
+} = require('../../services');
 
 const getAllEstablishments = async () => {
   loggingService.logFunctionCall('fhrs.controller', 'getAllEstablishments');
@@ -32,7 +35,7 @@ const getEstablishmentsFromLa = async (la, filters) => {
   }
 }
 
-// This function is very slow and long running, and time complextity increseases hugely with input. 
+// This function is very slow and long running, and time complextity increseases hugely with input.
 // Beyond the prototype level, a stream or paginated approach to building a report would be suitable.
 const buildReport = async (body) => {
   loggingService.logFunctionCall('fhrs.controller', 'buildReport', body.la);
@@ -51,7 +54,7 @@ const buildReport = async (body) => {
 
     combinedEstablishments.forEach((establishment) => {
       const newEstablishment = Object.assign({}, establishment);
-      
+
       body.excludedData.forEach((data) => {
         delete newEstablishment[data];
       });
@@ -59,9 +62,9 @@ const buildReport = async (body) => {
       filteredEstablishments.push(newEstablishment);
     });
 
-    const result = body.cutoffDate 
-      ? filteredEstablishments.filter(establishment => body.cutoffDate > establishment.RatingDate) 
-      : filteredEstablishments;
+    const result = body.cutoffDate ?
+      filteredEstablishments.filter(establishment => body.cutoffDate > establishment.RatingDate) :
+      filteredEstablishments;
 
     loggingService.logFunctionSuccess('fhrs.controller', 'buildReport');
     return result;
@@ -71,8 +74,32 @@ const buildReport = async (body) => {
   }
 }
 
+const writeCSV = async (data) => {
+  loggingService.logFunctionCall('fhrs.controller', 'writeCSV');
+
+  return new Promise((resolve, reject) => {
+
+    try {
+      const csvResult = json2csv({
+        data,
+        flatten: true
+      });
+
+      loggingService.logFunctionSuccess('fhrs.controller', 'writeCSV');
+
+      resolve(csvResult);
+    } catch (err) {
+      loggingService.logFunctionError('fhrs.contoller', 'writeCSV', err);
+      reject(err);
+    }
+
+  });
+
+}
+
 module.exports = {
   buildReport,
   getAllEstablishments,
   getEstablishmentsFromLa,
+  writeCSV,
 }
